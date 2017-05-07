@@ -1,0 +1,179 @@
+spring:
+    datasource:
+        url: jdbc:hsqldb:file:c:/db/nutchbuilderc;shutdown=true
+        username: sa
+        password:
+        driver-class-name: org.hsqldb.jdbc.JDBCDriver
+        validation-query: select 1 from INFORMATION_SCHEMA.SYSTEM_USERS
+        test-on-borrow: true
+    secondarydatasource:
+        url: jdbc:mysql://localhost:3306/nutchbuilderc?useUnicode=true&characterEncoding=utf-8
+        username: nutchbuilderc
+        password: 123456
+        driver-class-name: com.mysql.jdbc.Driver
+        validation-query: SELECT 1
+        test-on-borrow: true
+    tomcat:
+        test-on-borrow: true
+        max-wait: 10000
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+            
+    messages:
+        basename: messages/shared,messages/children/format,messages/children/validate
+        always-use-message-format: false
+        cache-seconds: -1
+        encoding: UTF-8
+        fallback-to-system-locale: true
+    data:
+        rest:
+            base-path: /api/v1
+    mvc:
+        locale: en
+    thymeleaf:
+        cache: false
+        prefix: classpath:/templates/
+        suffix: .html
+    security:
+        enable-csrf: true
+    batch:
+        job: 
+            names: mknutchbasefolder-job 
+            enabled: true
+    hive:
+        jdbcUrl: jdbc:hive2://10.74.111.62:10000/default
+    hadoop:
+        fsUri: hdfs://10.74.111.62:8020
+#        resourceManagerAddress:
+#        resourceManagerSchedulerAddress:
+#        resourceManagerHost:
+#        resourceManagerPort:
+#        resourceManagerSchedulerPort:
+#        jobHistoryAddress:
+        resources:
+            - file:///E:/configuratedHadoopFolder/hadoop-2.7.3/etc/hadoop/core-site.xml
+            - file:///E:/configuratedHadoopFolder/hadoop-2.7.3/etc/hadoop/hdfs-site.xml
+            - file:///E:/configuratedHadoopFolder/hadoop-2.7.3/etc/hadoop/mapred-site.xml
+            - file:///E:/configuratedHadoopFolder/hadoop-2.7.3/etc/hadoop/yarn-site.xml
+#        config:
+#            fs:
+#                defaultFS: hdfs://localhost:8020
+        fsshell:
+            enabled: false
+    nutch:
+        baseFolder: nutch
+        localBaseFolder: jobproperties
+        maxUnjarNumber: 6
+        # from core-default.xml, property name is "hadoop.tmp.dir"
+        unjarFolder: D:/tmp/hadoop-admin
+management:
+    security:
+        enabled: false
+server:
+    port: 88
+multipart:
+    enabled: false
+logging:
+    level:
+        org.springframework.security.web.access: DEBUG
+        org.springframework.jdbc.core: DEBUG
+        org.springframework.data: DEBUG
+#        org.springframework.batch: DEBUG
+#        org.apache.hadoop.mapreduce: DEBUG
+myapp:
+    dataWriteSourcePath: E:\OneDriver\OneDrive\浙江政务服务网
+    mapredout: e:\mapredout
+    templateRoot: /home/nutchbuilderc/templateRoot
+    buildRoot: /home/nutchbuilderc/buildRoot
+    unjarRoot: C:\Users\admin\AppData\Local\Temp
+    jwtSecretFile: C:\Users\Administrator\jwtsecret
+---
+spring:
+    profiles: prod
+    security:
+        enable-csrf: true
+server:
+    port: 9008
+    tomcat:
+        remote_ip_header: x-forwarded-for
+        protocol_header: x-forwarded-proto
+# setx SPRING_PROFILES_ACTIVE dev
+---
+spring:
+    profiles: dev
+    datasource:
+        url: jdbc:hsqldb:file:c:/db/nutchbuilderc;shutdown=true
+        username: sa
+        password:
+        driver-class-name: org.hsqldb.jdbc.JDBCDriver
+        validation-query: select 1 from INFORMATION_SCHEMA.SYSTEM_USERS
+        test-on-borrow: true
+    secondarydatasource:
+        url: jdbc:mysql://localhost:3306/nutchbuilderc?useUnicode=true&characterEncoding=utf-8
+        username: nutchbuilderc
+        password: 123456
+        driver-class-name: com.mysql.jdbc.Driver
+        validation-query: SELECT 1
+        test-on-borrow: true
+    security:
+        enable-csrf: true
+    thymeleaf:
+      cache: false
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#      prefix: file:///f:/github/boot-template/src/main/resources/templates/
+    devtools.restart.exclude: public/**
+    batch:
+        job:
+            names: a,b,c
+            enabled: false
+    nutch:
+        baseFolder: nutch
+        localBaseFolder: jobproperties
+        maxUnjarNumber: 6
+        # from core-default.xml, property name is "hadoop.tmp.dir"
+        unjarFolder: D:/tmp/hadoop-admin
+logging:
+    level:
+        org.springframework.security.web.access: DEBUG
+        org.springframework.jdbc.core: DEBUG
+        org.springframework.data: DEBUG
+        org.hibernate.SQL: DEBUG
+#        org.springframework.batch: DEBUG
+#        org.apache.hadoop.mapreduce: DEBUG
+myapp:
+    disableCsrf: true
+    dataWriteSourcePath: E:\OneDriver\OneDrive\浙江政务服务网
+    mapredout: e:\mapredout
+    templateRoot: e:\nutchBuilderRoot\templateRoot
+    buildRoot: e:\nutchBuilderRoot\buildRoot
+    unjarRoot: C:\Users\admin\AppData\Local\Temp
+    hbaseRestHost: s110.host.name
+    hbaseRestPort: 8080
+    hbaseRestProtocol: http
+    hdfsHost: s110.host.name
+    hadoopExecutable: G:/hadoop-2.6.2/bin/hadoop.cmd
+    hdfsPort: 
+    antExec: G:/apache-ant-1.9.6/bin/ant.bat
+    tProjectRoot: e:/nutchBuilderRoot/buildRoot/a
+    zkQuoram: s62.host.name,s63.host.name,s64.host.name,s65.host.name,s66.host.name
+    jwtConfig:
+      file: d:\jwtsecret.txt
+      issuer: jianglibo
+      principalTokenAlive: 1800000 # 30 minutes
+      emailTokenAlive: 172800000 #2 days
+katharsis:
+    resourcePackage: com.jianglibo.nutchbuilder.katharsis
+    domainName: http://localhost:8080
+    pathPrefix: /jsonapi
+    default-page-limit: 20
+    jpa:
+      enabled: false

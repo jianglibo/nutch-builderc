@@ -1,0 +1,335 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url "http://maven.jahia.org/maven2"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE")
+        classpath("org.hidetake:gradle-ssh-plugin:2.2.0")
+    }
+}
+
+ext['thymeleaf.version'] = '3.0.2.RELEASE'
+ext['thymeleaf-layout-dialect.version'] = '2.1.1'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.hidetake.ssh'
+
+eclipse {
+    classpath {
+        downloadSources = true
+    }
+}
+
+springBoot {
+    executable = true
+}
+
+remotes {
+  nutchbuilderweb {
+    host = "$nutchbuilderwebhost"
+    user = 'root'
+    knownHosts = allowAnyHosts
+    identity = file(identityFile)
+  }
+}
+
+sourceSets {
+    main {
+        resources {
+            exclude '**/node_modules/*'
+            exclude '**/bower_components/*'
+        }
+    }
+}
+
+jar {
+    baseName = 'nutchbuilderc'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+       url "http://maven.jahia.org/maven2"
+    }
+}
+
+//    compile("org.springframework.boot:spring-boot-starter-amqp")
+//    compile("org.springframework.boot:spring-boot-starter-jersey")
+//    compile("org.springframework.boot:spring-boot-starter-remote-shell")
+//    compile("mysql:mysql-connector-java")
+//	compile("com.jhlabs:filters:2.0.235-1")
+
+configurations {
+//    all*.exclude module : 'spring-boot-starter-logging'
+//    all*.exclude module: "logback-classic"
+//	compile.exclude group: 'ch.qos.logback'
+//	compile.exclude group: 'org.mortbay.jetty'
+//	compile.exclude group: 'org.eclipse.jetty.aggregate'
+}
+
+dependencies {
+    // tag::jetty[]
+    compile("org.springframework.boot:spring-boot-starter")
+//    {
+//        exclude module: "spring-boot-starter-tomcat"
+//    }
+//    compile("org.springframework.boot:spring-boot-starter-jetty")
+    // end::jetty[]
+    // tag::actuator[]
+    // compile("org.springframework.boot:spring-boot-starter-actuator")
+    // end::actuator[]
+	// compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    // {
+    	// exclude group: "org.hibernate", module: "hibernate-entitymanager"
+    // }
+    
+    compile("org.springframework.boot:spring-boot-starter-batch")
+    compile("org.springframework.boot:spring-boot-starter-integration")
+    
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    // compile("org.springframework.boot:spring-boot-starter-security")
+    // compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    // compile("org.springframework.security.oauth:spring-security-oauth2:2.0.12.RELEASE")
+    compile("org.springframework.boot:spring-boot-devtools")
+
+    // compile("com.h2database:h2")
+    // https://mvnrepository.com/artifact/org.hsqldb/hsqldb
+	compile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.4'
+    
+    compile("mysql:mysql-connector-java")
+    compile("commons-fileupload:commons-fileupload:1.3.1")
+  	compile("org.apache.httpcomponents:fluent-hc:4.5")
+  	// https://mvnrepository.com/artifact/com.google.guava/guava
+	compile group: 'com.google.guava', name: 'guava', version: '19.0'
+	
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml
+	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.8.7'
+	
+	//compile 'org.springframework.data:spring-data-rest-hal-browser'
+	
+	// https://mvnrepository.com/artifact/io.katharsis/katharsis-core
+	// compile group: 'io.katharsis', name: 'katharsis-core', version: '3.0.1'
+	
+	// https://mvnrepository.com/artifact/io.katharsis/katharsis-spring
+	// compile group: 'io.katharsis', name: 'katharsis-spring', version: '3.0.1'
+	
+	// https://mvnrepository.com/artifact/io.katharsis/katharsis-brave
+	// compile group: 'io.katharsis', name: 'katharsis-brave', version: '3.0.1'
+
+    // https://mvnrepository.com/artifact/io.katharsis/katharsis-validation
+    // compile group: 'io.katharsis', name: 'katharsis-validation', version: '3.0.1'
+
+	
+	// https://mvnrepository.com/artifact/io.zipkin.brave/brave-apache-http-interceptors
+	// compile group: 'io.zipkin.brave', name: 'brave-apache-http-interceptors', version: '4.0.6'
+    
+    // https://mvnrepository.com/artifact/com.auth0/java-jwt
+	// compile group: 'com.auth0', name: 'java-jwt', version: '3.1.0'
+
+    // https://mvnrepository.com/artifact/org.glassfish/javax.el
+    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.1-b08'
+
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.1.Final'
+
+	// https://mvnrepository.com/artifact/org.apache.nutch/nutch
+	// compile group: 'org.apache.nutch', name: 'nutch', version: '2.3.1'
+	
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework.security:spring-security-test:4.2.1.RELEASE")
+    testCompile("org.skyscreamer:jsonassert:1.4.0")
+}
+
+/*
+task compileWordCount (type: JavaCompile) {
+    source = sourceSets.test.java.srcDirs
+    include 'some/pkg/ClassTwo.java'
+    classpath = sourceSets.main.compileClasspath
+    destinationDir = sourceSets.main.output.classesDir
+}
+*/
+/*
+eclipse {
+    classpath {
+         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+    }
+}
+*/
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1'
+}
+
+// /etc/systemd/system/
+// PIDFile=/var/run/chronyd.pid
+
+task printVars {
+	doLast {
+		println jar.baseName + "-" + jar.version + ".jar"
+		println remotes.nutchbuilderweb.host
+		
+	}
+}
+
+task installSystemd(dependsOn: bootRepackage) {
+  doLast {
+    // def jn = "build/libs/nutchbuilder.jar"
+    // copy {
+    //   	from 'build/libs/' + jar.baseName + "-" + jar.version + ".jar"
+    //    	into "build/libs"
+    //    	rename { String fn ->
+    //    		'nutchbuilder.jar'
+    //    	}
+    // }
+  def clientJarName = 'build/libs/' + jar.baseName + "-" + jar.version + ".jar"
+  def serverJarName = '/var/nutchbuilder/nutchbuilderc.jar'
+  def serverJarNameNew = '/var/nutchbuilder/' + jar.baseName + "-" + jar.version + ".jar"
+  // journalctl to view log file.
+  //  Failed at step EXEC spawning /var/nutchbuilder/nutchbuilder.jar: Permission denied
+  // lsof -i :25
+    ssh.run {
+      session(remotes.nutchbuilderweb) {
+        // execute 'systemctl daemon-reload'
+        execute 'systemctl stop nutchbuilder'
+        execute "rm -f ${serverJarName}.bak", ignoreError: true
+        execute "mv $serverJarName ${serverJarName}.bak", ignoreError: true
+        execute "mv $serverJarNameNew $serverJarName", ignoreError: true
+        execute 'mkdir -p /var/nutchbuilder/db', ignoreError: true
+
+        put from: 'systemd/nutchbuilder.service', into: '/etc/systemd/system/'
+        put from: clientJarName , into: serverJarName
+        execute 'useradd nutchbuilder', ignoreError: true
+        execute 'chown -R nutchbuilder:nutchbuilder /var/nutchbuilder'
+        execute 'chmod +x /var/nutchbuilder/nutchbuilder.jar'
+        execute 'systemctl enable nutchbuilder.service'
+        execute 'systemctl start nutchbuilder.service'
+      }
+    }
+  }
+}
+
+task doRegression {
+  doLast {
+    def clientJarName = 'build/libs/' + jar.baseName + "-" + jar.version + ".jar"
+    def serverJarName = '/var/nutchbuilder/nutchbuilder.jar'
+    def serverJarNameNew = '/var/nutchbuilder/' + jar.baseName + "-" + jar.version + ".jar"
+    ssh.run {
+      session(remotes.nutchbuilderweb) {
+        // execute 'systemctl daemon-reload'
+        execute 'systemctl stop nutchbuilder'
+        execute "rm -f ${serverJarName}.bak.bak", ignoreError: true
+        execute "mv ${serverJarName} ${serverJarName}.bak.bak", ignoreError: true
+        execute "mv ${serverJarName}.bak ${serverJarName}", ignoreError: true
+        execute 'chown -R nutchbuilder:nutchbuilder /var/nutchbuilder'
+        execute 'chmod +x /var/nutchbuilder/nutchbuilder.jar'
+        execute 'systemctl start nutchbuilder.service'
+      }
+    }
+  }
+}
+
+task uploadTemplate {
+  doLast {
+    def srvd = "/home/nutchbuilder/nutchBuilderRoot"
+    def tsrc = 'templateRoot/apache-nutch-2.3.1'
+    ssh.run {
+      session(remotes.nutchbuilderweb) {
+        // execute 'systemctl daemon-reload'
+        execute "mkdir -p ${srvd}", ignoreError: true
+        put from: tsrc, into: srvd
+        execute "chown -R nutchbuilder:nutchbuilder ${srvd}"
+      }
+    }
+  }
+}
+
+task restartWeb {
+  doLast {
+     ssh.run {
+       session(remotes.nutchbuilderweb) {
+        execute 'systemctl restart nutchbuilder.service'
+      }
+     }
+    }
+}
+
+task eliminateBom {
+	doLast {
+		sourceSets.main.java.each { file -> 
+            if (file.name.endsWith('.java')) {
+            	def c = file.getText('utf8')
+			 	file.setText(c, 'utf8')
+            }
+        }
+		sourceSets.test.java.each { file -> 
+            if (file.name.endsWith('.java')) {
+            	def c = file.getText('utf8')
+			 	file.setText(c, 'utf8')
+            }
+        }
+	}
+}
+
+
+// [Unit]
+// Description=NTP client/server
+// After=ntpdate.service sntp.service ntpd.service
+// Conflicts=ntpd.service
+
+// [Service]
+// Type=forking
+// PIDFile=/var/run/chronyd.pid
+// EnvironmentFile=-/etc/sysconfig/chronyd
+// ExecStart=/usr/sbin/chronyd $OPTIONS
+// ExecStartPost=/usr/libexec/chrony-helper update-daemon
+
+// [Install]
+// WantedBy=multi-user.target
+
+
+// [Unit]
+// Description=Postfix Mail Transport Agent
+// After=syslog.target network.target
+// Conflicts=sendmail.service exim.service
+
+// [Service]
+// Type=forking
+// PIDFile=/var/spool/postfix/pid/master.pid
+// EnvironmentFile=-/etc/sysconfig/network
+// ExecStartPre=-/usr/libexec/postfix/aliasesdb
+// ExecStartPre=-/usr/libexec/postfix/chroot-update
+// ExecStart=/usr/sbin/postfix start
+// ExecReload=/usr/sbin/postfix reload
+// ExecStop=/usr/sbin/postfix stop
+
+// [Install]
+// WantedBy=multi-user.target
+
+
+// [Unit]
+// Description=myapp
+// After=syslog.target
+
+// [Service]
+// User=myapp
+// ExecStart=/var/myapp/myapp.jar
+// SuccessExitStatus=143
+
+// [Install]
+// WantedBy=multi-user.target

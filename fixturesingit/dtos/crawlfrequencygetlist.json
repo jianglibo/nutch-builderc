@@ -1,0 +1,34 @@
+{
+    "data": [
+        {
+            "id": "131072",
+            "type": "crawlFres",
+            "attributes": {
+                "createdAt": 1493341758030,
+                "regex": "xxx",
+                "seconds": 3000000
+            },
+            "relationships": {
+                "site": {
+                    "data": null,
+                    "links": {
+                        "self": "http://localhost:8080/jsonapi/crawlFres/131072/relationships/site",
+                        "related": "http://localhost:8080/jsonapi/crawlFres/131072/site"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost:8080/jsonapi/crawlFres/131072"
+            }
+        }
+    ],
+    "links": {
+        "first": "http://localhost:8080/jsonapi/crawlFres/?page[limit]=20",
+        "last": "http://localhost:8080/jsonapi/crawlFres/?page[limit]=20",
+        "next": null,
+        "prev": null
+    },
+    "meta": {
+        "totalResourceCount": 1
+    }
+}

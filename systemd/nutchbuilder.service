@@ -1,0 +1,14 @@
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Make nutch builder process easy.
+After=syslog.target
+
+[Service]
+User=nutchbuilder
+ExecStart=/var/nutchbuilder/nutchbuilder.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
